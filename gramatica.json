@@ -1,0 +1,85 @@
+{
+    "inicio": "S",
+    "reglas": [
+        {
+            "id": "S",
+            "descripcion": "generador",
+            "tipo": null,
+            "valores": [
+                "C",
+                "SOS",
+                "F(S)"
+            ]
+        },
+        {
+            "id": "C",
+            "descripcion": "constantes",
+            "tipo": "ConstantNode",
+            "variables": [
+                {
+                    "tipo": null,
+                    "valor": [
+                        "x"
+                    ]
+                },
+                {
+                    "tipo": "float",
+                    "rango": {
+                        "min": -1,
+                        "max": 1
+                    }
+                }
+            ]
+        },
+        {
+            "id": "C",
+            "descripcion": "constantes",
+            "tipo": "ConstantNode",
+            "rango": {
+                "min": -1,
+                "max": 1
+            }
+        },
+        {
+            "id": "O",
+            "descripcion": "operadores",
+            "tipo": "OperatorNode",
+            "valores": [
+                {
+                    "operador": "-",
+                    "funcion": "unaryMinus",
+                    "parametros": [
+                        "S"
+                    ]
+                },
+                {
+                    "operador": "+",
+                    "funcion": "add",
+                    "parametros": [
+                        "S",
+                        "S"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "F",
+            "descripcion": "funciones",
+            "tipo": "FunctionNode",
+            "valores": [
+                {
+                    "funcion": "sqrt",
+                    "parametros": [
+                        "S"
+                    ]
+                },
+                {
+                    "funcion":"ceil",
+                    "parametros":[
+                        "S"
+                    ]
+                }
+            ]
+        }
+    ]
+}
