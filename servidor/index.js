@@ -1,12 +1,11 @@
-let gramatica = 7;
 
+const gramatica = require("./gramatica.json");
+const Individuo = require('./individuo.js');
 
+let equacion = new Individuo(gramatica);
 
-if(gramatica>6){console.log('mayor que')}
-console.log(gramatica);
+console.log(equacion.arbol);
 
-if (gramatica > 6) {
-    console.log();
-}else{
+// console.log(individuo);
 
-}
+// console.log(gramatica.inicio);

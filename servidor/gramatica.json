@@ -1,5 +1,5 @@
 {
-    "inicio": "S",
+    "inicio": "C",
     "reglas": [
         {
             "id": "S",
@@ -15,7 +15,7 @@
             "id": "C",
             "descripcion": "constantes",
             "tipo": "ConstantNode",
-            "variables": [
+            "valores": [
                 {
                     "tipo": null,
                     "valor": [
@@ -30,15 +30,6 @@
                     }
                 }
             ]
-        },
-        {
-            "id": "C",
-            "descripcion": "constantes",
-            "tipo": "ConstantNode",
-            "rango": {
-                "min": -1,
-                "max": 1
-            }
         },
         {
             "id": "O",
