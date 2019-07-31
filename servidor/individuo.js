@@ -2,8 +2,8 @@ const generador = require('./interprete');
 
 class Individuo {
 
-    constructor(JSONgramatica) {
-        this.arbol = generador.generarArbol(JSONgramatica, -1);
+    constructor(gramatica) {
+        this.arbol = generador.generarArbol(gramatica, -1);
         // console.log(generador);
     }
     

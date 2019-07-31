@@ -1,75 +1,50 @@
 const math = require('mathjs');
+const fs = require('fs');
+
+const unparser = require("nearley-unparse");
+
 
 function generarArbol(gramatica, profundidadMaxima) {
+    return generar(gramatica, profundidadMaxima);
+}
 
-    return generar(gramatica.inicio, gramatica, 0, profundidadMaxima);
+function generar(gramatica, profundidad) {
+
+    g = fs.readFileSync(gramatica);
+
+    gramar = compilarGramatica(g);
+
+    let texto = unparser(gramar, { max_stack_size: 5 });
+
+    console.log(texto);
+
+
 }
 
 
+function compilarGramatica(sourceCode) {
+    const nearley = require("nearley");
+    const compile = require("nearley/lib/compile");
+    const generate = require("nearley/lib/generate");
+    const nearleyGrammar = require("nearley/lib/nearley-language-bootstrapped");
 
-function generar(inicio, gramatica, profundidad, profundidadMaxima) {
 
-    let arbol = new math.ConstantNode(2);
+    // Parse the grammar source into an AST
+    const grammarParser = new nearley.Parser(nearleyGrammar);
+    grammarParser.feed(sourceCode);
+    const grammarAst = grammarParser.results[0]; // TODO check for errors
 
-    let m = gramatica.reglas.reduce((expresion, regla) => {
+    // Compile the AST into a set of rules
+    const grammarInfoObject = compile(grammarAst, {});
+    // Generate JavaScript code from the rules
+    const grammarJs = generate(grammarInfoObject, "grammar");
 
-        // console.log('llamando replace con expresion: ' + expresion + ' id: ' + regla.id);
+    // Pretend this is a CommonJS environment to catch exports from the grammar.
+    const module = { exports: {} };
+    eval(grammarJs);
 
-        return expresion.replace(regla.id, (id, posicion, cadena) => {
-
-            // console.log('id: ' + id + ' posicion: ' + posicion + ' cadena: ' + cadena + ' regla: ' + regla.descripcion);
-
-            const valor = math.pickRandom(regla.valores);
-            let texto;
-
-            switch (regla.tipo) {
-                case 'ConstantNode':
-                    switch (valor.tipo) {
-                        case 'float':
-                            texto = math.random(valor.rango.min, valor.rango.max);
-                            break;
-                        case 'int':
-                            texto = math.randomInt(valor.rango.min, valor.rango.max);
-                            break;
-                        default:
-                            texto = math.pickRandom(valor.valor);
-                            break;
-                    }
-
-                    arbol = new math.ConstantNode(texto);
-                    break;
-                case 'OperatorNode':
-                    let parametros = [];
-                    for (const parametro of valor.parametros) {
-                        parametros.push(generar(parametro, gramatica, profundidad + 1, profundidadMaxima));
-                    }
-
-                    texto = valor.operador;
-
-                    arbol = new math.OperatorNode(valor.operador, valor.funcion, parametros);
-                    break;
-                case 'FunctionNode':
-                    let parametros = [];
-                    for (const parametro of valor.parametros) {
-                        parametros.push(generar(parametro, gramatica, profundidad + 1, profundidadMaxima));
-                    }
-
-                    texto = valor.funcion;
-
-                    arbol = new math.FunctionNode(valor.funcion, parametros);
-                    break;
-                default:
-                    console.log('Error?');
-                    break;
-            }
-
-            return cadena.slice(0, posicion) + texto.toString() + candena.slice(id.length);
-
-        });
-
-    }, inicio);
-
-    return arbol;
+    return module.exports;
 }
+
 
 module.exports = { generarArbol };
