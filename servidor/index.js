@@ -1,10 +1,16 @@
 
 const Individuo = require('./individuo.js');
+const compilador = require('./nearley.js');
 
-let equacion = new Individuo('./gramatica.ne');
+const gramaticaCompilada = compilador.compilarGramatica('./gramatica.ne');
 
-// console.log("equacion.arbol.toString()||{}");s
+let equacion = new Individuo(gramaticaCompilada, 5);
 
-// console.log(individuo);
+console.log(equacion.equacion);
 
-// console.log(gramatica.inicio);
+
+// console.log(equacion.coste);
+
+// Individuo.calcularCoste(equacion);
+
+// console.log(equacion.coste);

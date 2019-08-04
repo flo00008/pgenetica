@@ -3,5 +3,5 @@ Ejemplo programación genética de la asignatura metaheurística
 
 TODO
 
--generar individuos desde gramatica
+-operadores de cruce y mutación
 

@@ -1,16 +1,27 @@
+#Sintaxis para crear gramaticas
+#https://mathjs.org/docs/expressions/syntax.html
+
 expresion -> constante 
-    | expresion operador expresion
-    | funcion "(" expresion ")" 
+    | operacion
+    | funcion
 
 constante -> decimal
     | "x"
 
-operador -> "+" 
+operacion -> expresion "+" expresion
+    | "(" expresion "+" expresion ")"
+    | "-" expresion
+    | expresion "-" expresion
+    | "(" expresion "-" expresion ")"
+    | expresion "*" expresion
+    | expresion "/" expresion
+    | expresion "^" expresion # esto se entiende como potencia a pesar de que JS no lo haga
     
-funcion -> "sqrt" 
+funcion -> "sqrt(" expresion ")" 
+    | "ceil(" expresion ")" 
 
 
 decimal -> "0." entero:+  {% function(d) {return {v:parseFloat(d[0] + d[1] + d[2].v)}} %}
 
-entero -> [1-9]:+    {% function(d) {return {v:d[0].join("")}} %}
+entero -> [0-9]    {% function(d) {return {v:d[0].join("")}} %}
 
