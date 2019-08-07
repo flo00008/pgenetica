@@ -1,41 +1,53 @@
 const math = require('mathjs');
-const unparser = require("nearley-unparse");
+const unparser = require('grammar-unparser').default;
+
 
 class Individuo {
 
-    constructor(gramaticaCompilada,profundidadMaxima) {
-        this.genotipo = Individuo.generarArbol(gramaticaCompilada, profundidadMaxima);
-        this.fenotipo = this.arbol.toString();
+    constructor(gramaticaCompilada, profundidadMaxima, semilla) {
+        this.genotipo = Individuo.generarArbol(gramaticaCompilada, profundidadMaxima,semilla);
+        this.fenotipo = this.genotipo.toString();
         this.error = 0;
         // console.log(generador);
         this.genotipo = this.genotipo.compile();
     }
 
-    evaluar(contexto){
+    evaluar(contexto) {
         return this.genotipo.evaluate(contexto);
     }
 
-    static generarArbol(gramatica, profundidadMaxima) {
-        return math.parse(unparser(gramatica, { max_stack_size: profundidadMaxima , max_loops: profundidadMaxima}));
+    static generarArbol(gramatica, profundidadMaxima,semilla) {
+        const up = new unparser({
+            Rules: gramatica.ParserRules,
+            Start: gramatica.ParserStart,
+            MaxStack: profundidadMaxima,
+            MaxLoops: profundidadMaxima
+        });
+
+        up.SetSeed(semilla);
+
+        return math.parse(up.Parse());
     }
 
-    static cruzar(padre1,padre2){
+    static cruzar(padre1, padre2) {
 
     }
 
-    static mutar(individuo){
+    static mutar(individuo, probabilidad) {
+
+
 
     }
 
-    static calcularECM(equacion,solucion){
+    static calcularECM(equacion, solucion) {
         let suma = 0;
 
         for (const punto of solucion) {
             const y = punto.y - equacion.evaluar(punto.x);
-            suma += y*y;
+            suma += y * y;
         }
 
-        const ecm = suma/solucion.length;
+        const ecm = suma / solucion.length;
         equacion.error = ecm;
         return ecm;
     }

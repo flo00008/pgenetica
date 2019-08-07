@@ -1,16 +1,13 @@
 
 const Individuo = require('./individuo.js');
-const compilador = require('./nearley.js');
+const compilador = require('../lib/nearley');
 
 const gramaticaCompilada = compilador.compilarGramatica('./gramatica.ne');
 
-let equacion = new Individuo(gramaticaCompilada, 5);
+const SEMILLA = 1;
 
-console.log(equacion.equacion);
+let equacion = new Individuo(gramaticaCompilada, 10,SEMILLA);
+
+console.log(equacion.fenotipo);
 
 
-// console.log(equacion.coste);
-
-// Individuo.calcularCoste(equacion);
-
-// console.log(equacion.coste);
